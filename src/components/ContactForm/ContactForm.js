@@ -13,7 +13,7 @@ import {
 
 export const ContactForm = () => {
   return (
-    <Card maxW="sm" ml="auto" mr="auto" mt="48px">
+    <Card maxW="sm" ml="auto" mr="auto" mt="48px" mb="48px">
       <CardHeader>
         <Heading textAlign="center" color="teal.400">
           Phonebook
