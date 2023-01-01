@@ -1,27 +1,22 @@
-// import PropTypes from 'prop-types';
-
-import {
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Stack,
-  Heading,
-} from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
+import { nanoid } from 'nanoid';
 import { AiOutlineFilter } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilter } from 'redux/selectors';
+import { setFilter } from 'redux/filterSlice';
 
 export const Filter = () => {
+  const filterId = nanoid();
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
   return (
-    <Stack maxW="sm" ml="auto" mr="auto">
-      <Heading textAlign="center" color="teal.400" mb="16px">
-        Contacts
-      </Heading>
+    <Stack maxW="sm" ml="auto" mr="auto" mb="16px">
       <InputGroup>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<AiOutlineFilter color="teal.700" />}
-        />
+        <InputLeftElement pointerEvents="none" children={<AiOutlineFilter />} />
         <Input
-          focusBorderColor="teal.300"
+          value={filter}
+          onChange={e => dispatch(setFilter(e.target.value))}
+          id={filterId}
           type="text"
           name="filter"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -33,8 +28,3 @@ export const Filter = () => {
     </Stack>
   );
 };
-
-// Filter.propTypes = {
-//   value: PropTypes.string.isRequired,
-//   onChange: PropTypes.func.isRequired,
-// };
