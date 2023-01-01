@@ -7,8 +7,8 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Heading,
+  Flex,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
@@ -17,9 +17,8 @@ import { getContacts } from 'redux/selectors';
 import { toast } from 'react-toastify';
 
 export const ContactForm = () => {
-  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
-
+  const contacts = useSelector(getContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -44,15 +43,16 @@ export const ContactForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const existingName = contacts.find(
+    const existingName = contacts.some(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
-    const existingNumber = contacts.find(contact => contact.number === number);
+    const existingNumber = contacts.some(contact => contact.number === number);
+
     if (existingName) {
-      toast(name + ' is already in contacts.');
+      toast(`${name} is alredy in contacts`);
       return;
     } else if (existingNumber) {
-      toast(number + ' is already in contacts.');
+      toast(`${number} is alredy in contacts`);
       return;
     }
     dispatch(addContact(name, number));
@@ -65,37 +65,43 @@ export const ContactForm = () => {
       </CardHeader>
       <CardBody>
         <Stack>
-          <InputGroup onSubmit={handleSubmit}>
-            <InputLeftAddon children="Name" />
-            <Input
-              size="md"
-              onChange={handleChange}
-              value={name}
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon children="Tel" />
-            <Input
-              size="md"
-              onChange={handleChange}
-              value={number}
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
+          <InputGroup as="form" onSubmit={handleSubmit} flexDirection="column">
+            <Flex mb="8px">
+              <InputLeftAddon children="Name" />
+              <Input
+                size="md"
+                onChange={handleChange}
+                value={name}
+                type="text"
+                name="name"
+                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+                required
+              />
+            </Flex>
+            <Flex mb="16px">
+              <InputLeftAddon children="Tel" />
+              <Input
+                size="md"
+                onChange={handleChange}
+                value={number}
+                type="tel"
+                name="number"
+                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                required
+              />
+            </Flex>
+            <Button
+              ml="auto"
+              mr="auto"
+              type="submit"
+              children="Add contact"
+              width={120}
             />
           </InputGroup>
         </Stack>
       </CardBody>
-      <CardFooter justifyContent="center">
-        <Button type="submit" children="Add contact" width={120} />
-      </CardFooter>
     </Card>
   );
 };

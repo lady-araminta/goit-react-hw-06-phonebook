@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { getContacts } from 'redux/selectors';
@@ -15,7 +15,9 @@ export const App = () => {
       {contacts.length > 0 ? (
         <ContactList />
       ) : (
-        <p>There are no saved contacts in your phonebook</p>
+        <Heading size="md" textAlign="center">
+          There are no saved contacts in your phonebook
+        </Heading>
       )}
       <ToastContainer position="top-center" autoClose={2500} />
     </Box>
